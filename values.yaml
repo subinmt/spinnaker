@@ -1,5 +1,6 @@
 halyard:
-  spinnakerVersion: 1.19.12
+        #spinnakerVersion: 1.19.12
+  spinnakerVersion: 1.25.4
   ## Define custom profiles for Spinnaker services. Read more for details:
   ## [Options for spinnaker helm chart](https://github.com/helm/charts/blob/master/stable/spinnaker/values.yaml)
   additionalProfileConfigMaps:

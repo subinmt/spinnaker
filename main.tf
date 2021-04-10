@@ -1,14 +1,14 @@
 # Complete example
 
 provider "aws" {
-  region              = "ap-northeast-2"
+  region              = "us-east-1"
   allowed_account_ids = [var.aws_account_id]
   version             = ">= 3.0"
 }
 
 provider "aws" {
   alias               = "prod"
-  region              = "ap-northeast-2"
+  region              = "us-east-1"
   allowed_account_ids = [var.aws_account_id]
   version             = ">= 3.0"
 }
@@ -26,8 +26,6 @@ module "spinnaker" {
   cidr                   = var.cidr
   kubernetes_version     = var.kubernetes_version
   kubernetes_node_groups = var.kubernetes_node_groups
-  aurora_cluster         = var.aurora_cluster
-  aurora_instances       = var.aurora_instances
   assume_role_arn        = [module.spinnaker-managed-role.role_arn]
 }
 

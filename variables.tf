@@ -3,6 +3,7 @@
 ### aws credential
 variable "aws_account_id" {
   description = "The aws account id for the tf backend creation (e.g. 857026751867)"
+  type        = string
 }
 
 ### network
@@ -29,17 +30,6 @@ variable "kubernetes_version" {
 
 variable "kubernetes_node_groups" {
   description = "EKS managed node groups definition"
-  default     = []
-}
-
-### rdb cluster
-variable "aurora_cluster" {
-  description = "RDS Aurora for mysql cluster definition"
-  default     = {}
-}
-
-variable "aurora_instances" {
-  description = "RDS Aurora for mysql instances definition"
   default     = []
 }
 
