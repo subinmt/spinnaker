@@ -6,7 +6,3 @@ halyard:
   additionalProfileConfigMaps:
     create: false
     data: {}
-    
-  deck:
-    enabled: true
-    serviceType: LoadBalancer
