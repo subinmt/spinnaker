@@ -81,3 +81,28 @@ spec:
 ```
 
 ## Step By Step Guidelines to Design Spinnaker Pipeline for Blue-Green
+
+## Spinnaker Pipeline – 1:
+
+* The Spinnaker pipeline should consist of all required parameters for release and 2 stages.
+* Deploy Stage for Blue Deployment
+* Patch Stage for service to switch traffic on Blue deployment.
+
+## Spinnaker Pipeline – 2:
+
+* In this scenario, the Spinnaker pipeline should consist of 3 stages.
+* Patch Stage for service to share traffic between existing green and upcoming blue.
+* Deploy Stage for Blue deployment.
+* Patch Stage for service to switch traffic completely on Blue deployment.
+* With both approaches, rollout and rollback can be achieved with parameters of the given choice. While going for the second design, we can achieve a blue-green strategy with smooth transitioning of traffic as well as non-live deployment to achieve a quick rollback.
+* However, there is a challenge in specific conditions, if more than 1 release (including green) version exists in the environment. Then traffic will be bound to share in all of them after the first stage. This will pose an issue in the production environment.
+* The above-discussed pipelines can be extended to use Git/Bitbucket-based Kubernetes artifacts instead of text-based. And further can be parameterized to use as a pipeline template for different teams.
+
+## Destroy Old Spinnaker Deployment
+* The older deployments can be removed by executing either of the below two options:
+  - By deleting Deployments from UI (Infrastructure tab > Clusters sub-tab)
+  - By creating a separate pipeline, which contains delete manifest stage and release parameter.
+* This approach also assumes a robust external versioning system for release management.
+
+## Conclusion
+The deployment strategies play a vital role in achieving faster continuous delivery (CD). The blue-green strategy is one of the prominent production deployment strategies, used by organizations. The above steps help in understanding as well as achieving a blue-green strategy in a containerized production environment using Kubernetes objects and Spinnaker pipelines.
