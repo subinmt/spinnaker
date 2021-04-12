@@ -85,6 +85,11 @@ spec:
 * The Spinnaker pipeline should consist of all required parameters for release and 2 stages.
 * Deploy Stage for Blue Deployment
 * Patch Stage for service to switch traffic on Blue deployment.
+```
+spec:
+  selector:
+    release: '${parameters.release}'
+```
 
 ## Spinnaker Pipeline – 2:
 
@@ -92,6 +97,17 @@ spec:
 * Patch Stage for service to share traffic between existing green and upcoming blue.
 * Deploy Stage for Blue deployment.
 * Patch Stage for service to switch traffic completely on Blue deployment.
+```
+app: remove
+path: /spec/selector/release
+```
+
+```
+spec:
+  selector:
+    release: '${parameters.release}'
+```
+
 * With both approaches, rollout and rollback can be achieved with parameters of the given choice. While going for the second design, we can achieve a blue-green strategy with smooth transitioning of traffic as well as non-live deployment to achieve a quick rollback.
 * However, there is a challenge in specific conditions, if more than 1 release (including green) version exists in the environment. Then traffic will be bound to share in all of them after the first stage. This will pose an issue in the production environment.
 * The above-discussed pipelines can be extended to use Git/Bitbucket-based Kubernetes artifacts instead of text-based. And further can be parameterized to use as a pipeline template for different teams.
