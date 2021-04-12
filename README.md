@@ -19,4 +19,65 @@ Run terraform:
 ```
 $ terraform destroy -var-file tc1.tfvars
 ```
+## Blue-Green Deployment Strategy In Spinnaker For Kubernetes Deployments
+Blue/Green is to deploy a new version of your application alongside the existing version(s), send client traffic to the new version, and then disable traffic to the existing version in the cluster.
 
+## Possible approaches to design Blue-Green strategy for Kubernetes deployments
+
+![BGdeploy](https://user-images.githubusercontent.com/37261883/114395469-08df3400-9bba-11eb-9e00-de450cd2fa3b.jpg)
+
+               Spinnaker pipeline deployment on Kubernetes with Nginx server used for routing traffic
+
+In my scenario, I will design a Spinnaker pipelines using the simple web app image. And here I am going to use the Spinnaker expressions feature on Spinnaker, to develop this solution. This solution uses Kubernetes service object as Load Balancer to switch traffic from blue to green or vice versa, based on matching selector labels in service object to that of spec.template.metadata.labels in deployment object.
+
+## Configuring Spinnaker For Blue/Green Deployment
+
+* To manage versions, use of parameterized deployment manifest such as given below:
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    release: '${parameters.release}'
+  name: 'crpdemo-${parameters.release}'
+  namespace: default
+spec:
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: crp
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: crp
+        release: '${parameters.release}'
+    spec:
+      containers:
+      - name: crpdemo
+        image: subinmt1991/simpleapp:${parameters.release}
+        ports:
+        - containerPort: 80
+```
+
+* Assuming service object pre-exist with “release” as one of the selector labels such as given below, and holding the “release” value same as mentioned in first deployment release:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: crpdemo-svc
+  namespace: default
+  labels:
+    app: crp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: crp
+    release: '${parameters.release}'
+  type: LoadBalancer
+```
+
+## Step By Step Guidelines to Design Spinnaker Pipeline for Blue-Green
