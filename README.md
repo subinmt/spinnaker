@@ -24,7 +24,7 @@ Blue/Green is to deploy a new version of your application alongside the existing
 
 ![BGdeploy](https://user-images.githubusercontent.com/37261883/114395469-08df3400-9bba-11eb-9e00-de450cd2fa3b.jpg)
 
-               Spinnaker pipeline deployment on Kubernetes with Nginx server used for routing traffic
+               Spinnaker pipeline deployment on Kubernetes
 
 In my scenario, I will design a Spinnaker pipelines using the simple web app image. And here I am going to use the Spinnaker expressions feature on Spinnaker, to develop this solution. This solution uses Kubernetes service object as Load Balancer to switch traffic from blue to green or vice versa, based on matching selector labels in service object to that of spec.template.metadata.labels in deployment object.
 
