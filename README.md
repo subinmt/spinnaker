@@ -118,5 +118,16 @@ spec:
   - By creating a separate pipeline, which contains delete manifest stage and release parameter.
 * This approach also assumes a robust external versioning system for release management.
 
+## Step By Step Guidelines to Design destroy older deployments. 
+To ensure users traffic is routed to the correct pod (the one deployed with your latest version of the app), we need to remove the older versions.  
+Here I am use release version as one of the labels for my pods. In addition, the version label gives us a distinction between old and latest.
+
+* Create a new pipeline for destroy older deployments.
+* Then click ‘Add Stage’, select Delete Manifest.
+* In the Manifest section
+ - Provide Account, Namespace,selector, kind and Labels
+ 
+In the 'Settings' section, check the checkbox labeled ‘Cascading’ to eliminate having orphaned resources.
+
 ## Conclusion
 The deployment strategies play a vital role in achieving faster continuous delivery (CD). The blue-green strategy is one of the prominent production deployment strategies, used by organizations. The above steps help in understanding as well as achieving a blue-green strategy in a containerized production environment using Kubernetes objects and Spinnaker pipelines.
