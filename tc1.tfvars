@@ -1,10 +1,4 @@
-name   = "spinnaker"
-stack  = "dev"
-detail = "tc1"
-tags = {
-  env  = "dev"
-  test = "tc1"
-}
+name   = "spinnaker-crp"
 aws_region         = "us-east-1"
 azs                = ["us-east-1a", "us-east-1b", "us-east-1c"]
 cidr               = "172.31.0.0/16"
