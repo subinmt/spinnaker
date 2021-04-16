@@ -1,28 +1,51 @@
-# Complete example
+resource "aws_iam_role" "cluster_role" {
+  name = "eks-cluster-role"
 
-provider "aws" {
-  region              = "us-east-1"
-  allowed_account_ids = [var.aws_account_id]
-  version             = ">= 3.0"
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
 }
 
-# spinnaker
-module "spinnaker" {
-  source                 = "Young-ook/spinnaker/aws"
-  version                = "~> 2.0"
-  name                   = var.name
-  region                 = var.aws_region
-  azs                    = var.azs
-  cidr                   = var.cidr
-  kubernetes_version     = var.kubernetes_version
-  kubernetes_node_groups = var.kubernetes_node_groups
-  assume_role_arn        = [module.spinnaker-managed-role.role_arn]
+resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.cluster_role.name
 }
 
-# spinnaker managed role
-module "spinnaker-managed-role" {
-  source           = "Young-ook/spinnaker/aws//modules/spinnaker-managed-aws"
-  version          = "~> 2.0"
-  name             = "spinnaker"
-  trusted_role_arn = [module.spinnaker.role_arn]
+resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+  role       = aws_iam_role.cluster_role.name
 }
+
+resource "aws_eks_cluster" "cluster1" {
+  name     = var.clustername
+  version = "1.19"
+  role_arn = aws_iam_role.cluster_role.arn
+  vpc_config {
+    subnet_ids = var.subnet
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
+  ]
+}
+
+output "endpoint" {
+  value = aws_eks_cluster.cluster1.endpoint
+}
+
+output "kubeconfig-certificate-authority-data" {
+  value = aws_eks_cluster.cluster1.certificate_authority[0].data
+}
+

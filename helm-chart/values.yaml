@@ -1,8 +1,8 @@
 halyard:
-  spinnakerVersion: 1.21.2
+  spinnakerVersion: 1.24.4
   image:
-    repository: gcr.io/spinnaker-marketplace/halyard
-    tag: 1.38.0
+    repository: us-docker.pkg.dev/spinnaker-community/docker/halyard
+    tag: stable
     pullSecrets: []
   # Set to false to disable persistence data volume for halyard
   persistence:
@@ -207,11 +207,11 @@ kubeConfig:
   # When true, clouddriver will query manifest status during pipeline executions using live
   # data rather than the cache. This eliminates all time spent in the “force cache refresh”
   # task in pipelines, greatly reducing execution time.
-  liveManifestCalls: true
+  liveManifestCalls: false
 
 # Change this if youd like to expose Spinnaker outside the cluster
 ingress:
-  enabled: true
+  enabled: false
   # host: spinnaker.example.org
   # annotations:
     # ingress.kubernetes.io/ssl-redirect: 'true'
@@ -301,8 +301,8 @@ gcs:
 
 # AWS Simple Storage Service
 s3:
-  enabled: enable
-  bucket: "test-spinniker-12042021"
+  enabled: false
+  bucket: "<S3-BUCKET-NAME>"
   # rootFolder: "front50"
   # region: "us-east-1"
   # endpoint: ""
