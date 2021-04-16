@@ -1,13 +1,13 @@
 # Spinnaker for AWS EKS
 
 ## Setup
-You can use this module like below. This shows how to create the resources for spinnaker. This module will create vpc, subnets, iam policies and kubernetes cluster.
+You can use this module like below. This shows how to create the resources for spinnaker. This module will create IAM policies and kubernetes cluster.
 
-Run terraform, you can use the `-var-file` option for customized paramters when you run the terraform plan/apply command.:
+Run terraform, you can use the `--var-file` option for customized paramters when you run the terraform plan/apply command.:
 ```
 terraform init
-terraform plan -var-file tc1.tfvars
-terraform apply -var-file tc1.tfvars
+terraform plan 
+terraform apply 
 ```
 After then you will see so many resources like EKS, IAM and others on AWS. 
 
@@ -15,7 +15,7 @@ After then you will see so many resources like EKS, IAM and others on AWS.
 
 Run terraform:
 ```
-$ terraform destroy -var-file tc1.tfvars
+$ terraform destroy 
 ```
 ## Blue-Green Deployment Strategy In Spinnaker For Kubernetes Deployments
 Blue/Green is to deploy a new version of your application alongside the existing version(s), send client traffic to the new version, and then disable traffic to the existing version in the cluster.
@@ -82,14 +82,9 @@ spec:
 
 ## Spinnaker Pipeline – 1:
 
-* The Spinnaker pipeline should consist of all required parameters for release and 2 stages.
+* The Spinnaker pipeline should consist of all required parameters for release and stage.
 * Deploy Stage for Blue Deployment
 * Patch Stage for service to switch traffic on Blue deployment.
-```
-spec:
-  selector:
-    release: '${parameters.release}'
-```
 
 ## Spinnaker Pipeline – 2:
 
