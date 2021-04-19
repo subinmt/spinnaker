@@ -11,7 +11,7 @@ resource "null_resource" "kube_config_import" {
 
 resource "null_resource" "spinnaker_deploy" {
   provisioner "local-exec" {
-    command = "bash ./spinneker.sh"
+    command = "helm install spinnaker ./helm-chart"
   }
   
   depends_on = [
