@@ -84,7 +84,6 @@ spec:
 
 * The Spinnaker pipeline should consist of all required parameters for release and stage.
 * Deploy Stage for Blue Deployment
-* Patch Stage for service to switch traffic on Blue deployment.
 
 ## Spinnaker Pipeline – 2:
 
