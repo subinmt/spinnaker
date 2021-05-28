@@ -124,3 +124,4 @@ In the 'Settings' section, check the checkbox labeled ‘Cascading’ to elimina
 
 ## Conclusion
 The deployment strategies play a vital role in achieving faster continuous delivery (CD). The blue-green strategy is one of the prominent production deployment strategies, used by organizations. The above steps help in understanding as well as achieving a blue-green strategy in a containerized production environment using Kubernetes objects and Spinnaker pipelines.
+
